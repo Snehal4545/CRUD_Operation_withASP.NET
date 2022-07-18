@@ -23,7 +23,8 @@ namespace CRUD_Operation_withASP.NET.Controllers
         // GET: ProductController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var model = db.GetProductById(id);
+            return View(model);
         }
 
         // GET: ProductController/Create
