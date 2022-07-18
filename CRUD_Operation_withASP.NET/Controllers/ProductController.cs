@@ -1,4 +1,5 @@
 ﻿using CRUD_Operation_withASP.NET.DAL;
+using CRUD_Operation_withASP.NET.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -34,11 +35,15 @@ namespace CRUD_Operation_withASP.NET.Controllers
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Product product)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                int result = db.AddProduct(product);
+                if (result == 1)
+                    return RedirectToAction(nameof(Index));
+                else
+                    return View();
             }
             catch
             {
@@ -49,17 +54,22 @@ namespace CRUD_Operation_withASP.NET.Controllers
         // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var model = db.GetProductById(id);
+            return View(model);
         }
 
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Product product)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                int result = db.UpdateProduct(product);
+                if (result == 1)
+                    return RedirectToAction(nameof(Index));
+                else
+                    return View();
             }
             catch
             {
@@ -70,17 +80,24 @@ namespace CRUD_Operation_withASP.NET.Controllers
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var model = db.GetProductById(id);
+            return View(model);
         }
 
         // POST: ProductController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirm(int id)
         {
             try
             {
+                int result = db.DeleteProduct(id);
+                if(result==1)
+
+
                 return RedirectToAction(nameof(Index));
+                return View();
             }
             catch
             {
